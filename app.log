@@ -1,0 +1,9 @@
+// Fake application logs for testing purposes
+
+[2025-07-04 10:10:00] INFO: Application started
+[2025-07-04 10:12:05] ERROR: Unauthorized login attempt
+[2025-07-04 10:13:22] WARNING: Slow response
+[2025-07-04 11:00:00] ERROR: Admin login failed
+[2025-07-04 12:25:00] ERROR: Firewall breach detected
+
+

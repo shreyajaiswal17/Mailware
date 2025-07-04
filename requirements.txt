@@ -1,0 +1,2 @@
+elasticsearch
+pywin32
