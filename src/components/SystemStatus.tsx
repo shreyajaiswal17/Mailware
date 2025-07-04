@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Server, Database, Mail, Eye, RefreshCw, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { Server, Database, Mail, Eye, RefreshCw, CheckCircle, XCircle, AlertTriangle, Zap } from 'lucide-react';
 
 interface SystemStatusProps {
   systemStatus: {
@@ -37,13 +37,13 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'online':
-        return 'border-green-500/30 bg-green-500/10';
+        return 'border-green-500/40 bg-green-500/10';
       case 'offline':
-        return 'border-red-500/30 bg-red-500/10';
+        return 'border-red-500/40 bg-red-500/10';
       case 'warning':
-        return 'border-yellow-500/30 bg-yellow-500/10';
+        return 'border-yellow-500/40 bg-yellow-500/10';
       default:
-        return 'border-gray-500/30 bg-gray-500/10';
+        return 'border-gray-500/40 bg-gray-500/10';
     }
   };
 
@@ -88,13 +88,13 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-white">System Status</h2>
-          <p className="text-white/70">Monitor the health of all Mailware components</p>
+          <h2 className="text-xl font-semibold text-cyan-400 neon-text">System Status</h2>
+          <p className="text-blue-300/70">Monitor the health of all Mailware components</p>
         </div>
         <button
           onClick={handleRefresh}
           disabled={isRefreshing}
-          className="flex items-center space-x-2 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-50"
+          className="flex items-center space-x-2 px-4 py-2 space-button disabled:opacity-50"
         >
           <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           <span>Refresh</span>
@@ -102,27 +102,27 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
       </div>
 
       {/* Overall Status */}
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
+      <div className="space-card p-6">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Overall System Health</h3>
+          <h3 className="text-lg font-semibold text-cyan-400 neon-text">Overall System Health</h3>
           <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse" style={{boxShadow: '0 0 10px #22c55e'}}></div>
             <span className="text-green-400 font-medium">All Systems Operational</span>
           </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="text-center">
-            <p className="text-2xl font-bold text-white">99.8%</p>
-            <p className="text-white/70 text-sm">Uptime</p>
+            <p className="text-2xl font-bold text-cyan-400">99.8%</p>
+            <p className="text-blue-300/70 text-sm">Uptime</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-white">3/3</p>
-            <p className="text-white/70 text-sm">Services Online</p>
+            <p className="text-2xl font-bold text-cyan-400">3/3</p>
+            <p className="text-blue-300/70 text-sm">Services Online</p>
           </div>
           <div className="text-center">
-            <p className="text-2xl font-bold text-white">0</p>
-            <p className="text-white/70 text-sm">Critical Issues</p>
+            <p className="text-2xl font-bold text-cyan-400">0</p>
+            <p className="text-blue-300/70 text-sm">Critical Issues</p>
           </div>
         </div>
       </div>
@@ -134,16 +134,16 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
           return (
             <div
               key={service.name}
-              className={`bg-white/10 backdrop-blur-md border rounded-xl p-6 ${getStatusColor(service.status)}`}
+              className={`space-card p-6 ${getStatusColor(service.status)}`}
             >
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-white/10 rounded-lg">
-                    <Icon className="w-5 h-5 text-white" />
+                  <div className="p-2 bg-blue-600/30 rounded-lg neon-border">
+                    <Icon className="w-5 h-5 text-cyan-400" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-white">{service.name}</h4>
-                    <p className="text-white/60 text-sm">{service.description}</p>
+                    <h4 className="font-semibold text-blue-200">{service.name}</h4>
+                    <p className="text-blue-300/60 text-sm">{service.description}</p>
                   </div>
                 </div>
                 {getStatusIcon(service.status)}
@@ -152,17 +152,17 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
               <div className="space-y-2">
                 {Object.entries(service.details).map(([key, value]) => (
                   <div key={key} className="flex justify-between text-sm">
-                    <span className="text-white/70 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</span>
-                    <span className="text-white font-medium">{value}</span>
+                    <span className="text-blue-300/70 capitalize">{key.replace(/([A-Z])/g, ' $1')}:</span>
+                    <span className="text-blue-200 font-medium">{value}</span>
                   </div>
                 ))}
               </div>
               
-              <div className="mt-4 pt-4 border-t border-white/10">
-                <span className={`px-2 py-1 text-xs font-medium rounded capitalize ${
-                  service.status === 'online' ? 'bg-green-500/20 text-green-300' :
-                  service.status === 'offline' ? 'bg-red-500/20 text-red-300' :
-                  'bg-yellow-500/20 text-yellow-300'
+              <div className="mt-4 pt-4 border-t border-blue-500/20">
+                <span className={`px-3 py-1 text-xs font-medium rounded capitalize border ${
+                  service.status === 'online' ? 'bg-green-500/20 text-green-300 border-green-500/40' :
+                  service.status === 'offline' ? 'bg-red-500/20 text-red-300 border-red-500/40' :
+                  'bg-yellow-500/20 text-yellow-300 border-yellow-500/40'
                 }`}>
                   {service.status}
                 </span>
@@ -173,8 +173,8 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
       </div>
 
       {/* System Logs */}
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">System Activity Log</h3>
+      <div className="space-card p-6">
+        <h3 className="text-lg font-semibold text-cyan-400 mb-4 neon-text">System Activity Log</h3>
         <div className="space-y-3">
           {[
             { time: lastUpdated.toLocaleTimeString(), event: 'System status refreshed', type: 'info' },
@@ -183,16 +183,20 @@ const SystemStatus: React.FC<SystemStatusProps> = ({ systemStatus }) => {
             { time: '16:52:00', event: 'Elasticsearch index updated', type: 'info' },
             { time: '16:45:00', event: 'Email service connection verified', type: 'success' }
           ].map((log, index) => (
-            <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
+            <div key={index} className="flex items-center justify-between p-3 bg-slate-800/40 rounded-lg border border-blue-500/20">
               <div className="flex items-center space-x-3">
-                <div className={`w-2 h-2 rounded-full ${
+                <div className={`w-3 h-3 rounded-full ${
                   log.type === 'success' ? 'bg-green-400' :
                   log.type === 'warning' ? 'bg-yellow-400' :
-                  'bg-blue-400'
-                }`}></div>
-                <span className="text-white">{log.event}</span>
+                  'bg-cyan-400'
+                }`} style={{
+                  boxShadow: log.type === 'success' ? '0 0 8px #22c55e' :
+                           log.type === 'warning' ? '0 0 8px #fbbf24' :
+                           '0 0 8px #06b6d4'
+                }}></div>
+                <span className="text-blue-200">{log.event}</span>
               </div>
-              <span className="text-white/60 text-sm">{log.time}</span>
+              <span className="text-blue-300/60 text-sm">{log.time}</span>
             </div>
           ))}
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, Download, RefreshCw } from 'lucide-react';
+import { Search, Filter, Download, RefreshCw, Database } from 'lucide-react';
 
 const LogViewer = () => {
   const [logs, setLogs] = useState([
@@ -31,10 +31,10 @@ const LogViewer = () => {
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'ERROR': return 'bg-red-500/20 text-red-300 border-red-500/30';
-      case 'WARNING': return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30';
-      case 'INFO': return 'bg-blue-500/20 text-blue-300 border-blue-500/30';
-      default: return 'bg-gray-500/20 text-gray-300 border-gray-500/30';
+      case 'ERROR': return 'bg-red-500/20 text-red-300 border-red-500/40';
+      case 'WARNING': return 'bg-yellow-500/20 text-yellow-300 border-yellow-500/40';
+      case 'INFO': return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
+      default: return 'bg-gray-500/20 text-gray-300 border-gray-500/40';
     }
   };
 
@@ -43,13 +43,13 @@ const LogViewer = () => {
       {/* Controls */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50 w-4 h-4" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-300/50 w-4 h-4" />
           <input
             type="text"
             placeholder="Search logs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+            className="w-full pl-10 pr-4 py-3 space-input"
           />
         </div>
         
@@ -57,7 +57,7 @@ const LogViewer = () => {
           <select
             value={levelFilter}
             onChange={(e) => setLevelFilter(e.target.value)}
-            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-white/30"
+            className="px-4 py-3 space-input"
           >
             <option value="ALL">All Levels</option>
             <option value="ERROR">Error</option>
@@ -68,44 +68,44 @@ const LogViewer = () => {
           <button
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white hover:bg-white/20 transition-colors disabled:opacity-50"
+            className="px-4 py-3 space-button disabled:opacity-50"
           >
             <RefreshCw className={`w-4 h-4 ${isRefreshing ? 'animate-spin' : ''}`} />
           </button>
           
-          <button className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white hover:bg-white/20 transition-colors">
+          <button className="px-4 py-3 space-button">
             <Download className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Log Table */}
-      <div className="bg-white/5 rounded-lg border border-white/10 overflow-hidden">
+      <div className="space-table">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-white/10">
+            <thead>
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">Timestamp</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">Level</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">Source</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-white/70 uppercase tracking-wider">Message</th>
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Timestamp</th>
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Level</th>
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Source</th>
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Message</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
+            <tbody>
               {filteredLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/80 font-mono">
+                <tr key={log.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-mono">
                     {log.timestamp}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`px-2 py-1 text-xs font-medium rounded border ${getLevelColor(log.level)}`}>
+                    <span className={`px-3 py-1 text-xs font-medium rounded border ${getLevelColor(log.level)}`}>
                       {log.level}
                     </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-white/60">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-blue-300/80">
                     {log.source}
                   </td>
-                  <td className="px-6 py-4 text-sm text-white">
+                  <td className="px-6 py-4 text-sm">
                     {log.message}
                   </td>
                 </tr>
@@ -116,24 +116,36 @@ const LogViewer = () => {
         
         {filteredLogs.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-white/60">No logs found matching your criteria.</p>
+            <Database className="w-12 h-12 text-blue-400/50 mx-auto mb-4" />
+            <p className="text-blue-300/60">No logs found matching your criteria.</p>
           </div>
         )}
       </div>
 
       {/* Log Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-          <p className="text-white/70 text-sm">Total Logs</p>
-          <p className="text-xl font-bold text-white">{filteredLogs.length}</p>
+        <div className="space-card p-4">
+          <p className="text-blue-300/70 text-sm font-medium">Total Logs</p>
+          <p className="text-xl font-bold text-cyan-400">{filteredLogs.length}</p>
         </div>
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-          <p className="text-white/70 text-sm">Error Logs</p>
+        <div className="space-card p-4">
+          <p className="text-blue-300/70 text-sm font-medium">Error Logs</p>
           <p className="text-xl font-bold text-red-400">{filteredLogs.filter(log => log.level === 'ERROR').length}</p>
         </div>
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
-          <p className="text-white/70 text-sm">Warning Logs</p>
+        <div className="space-card p-4">
+          <p className="text-blue-300/70 text-sm font-medium">Warning Logs</p>
           <p className="text-xl font-bold text-yellow-400">{filteredLogs.filter(log => log.level === 'WARNING').length}</p>
+        </div>
+      </div>
+
+      {/* Data Source Notice */}
+      <div className="space-card p-4 border-cyan-500/30 bg-cyan-500/10">
+        <div className="flex items-center space-x-2">
+          <Database className="w-5 h-5 text-cyan-400" />
+          <p className="text-cyan-200 text-sm">
+            <strong>Data Source:</strong> Currently showing logs from your app.log file. 
+            Connect to Elasticsearch to view live data from all sources.
+          </p>
         </div>
       </div>
     </div>
