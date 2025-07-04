@@ -1,12 +1,22 @@
-# sends alerts from Elasticsearch
-# watches Elasticsearch for error logs and sends email alerts
-
-
 from elasticsearch import Elasticsearch
 from datetime import datetime, timedelta
 import smtplib
 from email.mime.text import MIMEText
 import time
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Retrieve credentials from environment variables
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
+# Validate environment variables
+if not all([SENDER_EMAIL, RECEIVER_EMAIL, EMAIL_PASSWORD]):
+    raise ValueError("Missing required environment variables: SENDER_EMAIL, RECEIVER_EMAIL, or EMAIL_PASSWORD")
 
 # Connect to Elasticsearch
 es = Elasticsearch("http://localhost:9200")
@@ -16,19 +26,15 @@ seen_logs = set()
 
 def send_alert(log_messages):
     """Send email alert with the provided log messages."""
-    sender = "jaisshreya17@gmail.com"
-    receiver = "shreyaa.we@gmail.com"
-    password = "eqru wfpq fsrq swja"  # Gmail App Password
-
     msg = MIMEText(f"🚨 Error logs detected in the last 15 minutes:\n\n{log_messages}")
     msg['Subject'] = "Elastic Log Alert"
-    msg['From'] = sender
-    msg['To'] = receiver
+    msg['From'] = SENDER_EMAIL
+    msg['To'] = RECEIVER_EMAIL
 
     try:
         with smtplib.SMTP("smtp.gmail.com", 587) as server:
             server.starttls()
-            server.login(sender, password)
+            server.login(SENDER_EMAIL, EMAIL_PASSWORD)
             server.send_message(msg)
         print(f"📧 Alert sent at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     except Exception as e:
