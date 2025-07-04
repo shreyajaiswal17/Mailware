@@ -9,30 +9,41 @@ from dotenv import load_dotenv
 # Load environment variables from .env file
 load_dotenv()
 
-# Retrieve credentials from environment variables
+# Retrieve configuration from environment variables
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+ES_HOST = os.getenv("ES_HOST", "http://localhost:9200")
+ES_INDEX = os.getenv("ES_INDEX", "logs")
+ALERT_LEVELS = os.getenv("ALERT_LEVELS", "ERROR").split(",")
+TIME_WINDOW_MINUTES = int(os.getenv("TIME_WINDOW_MINUTES", "15"))
+POLLING_INTERVAL_SECONDS = int(os.getenv("POLLING_INTERVAL_SECONDS", "60"))
+SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
+SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
+EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "Elastic Log Alert")
+EMAIL_BODY_TEMPLATE = os.getenv("EMAIL_BODY_TEMPLATE", "🚨 Error logs detected in the last {time_window} minutes:\n\n{messages}")
 
-# Validate environment variables
-if not all([SENDER_EMAIL, RECEIVER_EMAIL, EMAIL_PASSWORD]):
-    raise ValueError("Missing required environment variables: SENDER_EMAIL, RECEIVER_EMAIL, or EMAIL_PASSWORD")
+# Validate required environment variables
+required_vars = ["SENDER_EMAIL", "RECEIVER_EMAIL", "EMAIL_PASSWORD"]
+missing_vars = [var for var in required_vars if not os.getenv(var)]
+if missing_vars:
+    raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
 # Connect to Elasticsearch
-es = Elasticsearch("http://localhost:9200")
+es = Elasticsearch(ES_HOST)
 
 # Set to track seen logs to avoid duplicate alerts
 seen_logs = set()
 
 def send_alert(log_messages):
     """Send email alert with the provided log messages."""
-    msg = MIMEText(f"🚨 Error logs detected in the last 15 minutes:\n\n{log_messages}")
-    msg['Subject'] = "Elastic Log Alert"
+    msg = MIMEText(EMAIL_BODY_TEMPLATE.format(time_window=TIME_WINDOW_MINUTES, messages=log_messages))
+    msg['Subject'] = EMAIL_SUBJECT
     msg['From'] = SENDER_EMAIL
     msg['To'] = RECEIVER_EMAIL
 
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
             server.starttls()
             server.login(SENDER_EMAIL, EMAIL_PASSWORD)
             server.send_message(msg)
@@ -44,22 +55,22 @@ def monitor_logs():
     """Continuously monitor Elasticsearch for new error logs."""
     print("🔍 Starting real-time log monitoring...")
     while True:
-        # Time range: last 15 minutes
+        # Time range: last N minutes
         time_filter = {
             "range": {
                 "timestamp": {
-                    "gte": (datetime.now() - timedelta(minutes=15)).isoformat(),
+                    "gte": (datetime.now() - timedelta(minutes=TIME_WINDOW_MINUTES)).isoformat(),
                     "lte": datetime.now().isoformat()
                 }
             }
         }
 
-        # Query: find logs with level ERROR
+        # Query: find logs with specified alert levels
         query = {
             "query": {
                 "bool": {
                     "must": [
-                        {"match": {"level": "ERROR"}},
+                        {"terms": {"level": ALERT_LEVELS}},  # Support multiple levels
                         time_filter
                     ]
                 }
@@ -68,7 +79,7 @@ def monitor_logs():
 
         # Run the query
         try:
-            res = es.search(index="logs", body=query)
+            res = es.search(index=ES_INDEX, body=query)
             hits = res["hits"]["hits"]
 
             if hits:
@@ -91,7 +102,7 @@ def monitor_logs():
             print(f"❌ Elasticsearch query failed at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: {e}")
 
         # Wait before the next check
-        time.sleep(60)  # Check every 60 seconds
+        time.sleep(POLLING_INTERVAL_SECONDS)
 
 if __name__ == "__main__":
     monitor_logs()
