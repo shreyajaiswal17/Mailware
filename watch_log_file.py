@@ -1,3 +1,5 @@
+# watches a log file app.log (fake) and sends them to Elasticsearch
+
 import time
 import os
 from elasticsearch import Elasticsearch
