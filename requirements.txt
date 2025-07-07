@@ -1,4 +1,4 @@
 elasticsearch
-pywin32
-
-
+python-dotenv
+smtplib  # (built-in but good to track)
+pywin32  # for reading Windows logs
