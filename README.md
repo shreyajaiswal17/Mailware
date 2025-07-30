@@ -1,33 +1,38 @@
 📊 Mailware: Automated Log Monitoring & Email Alerting with Elasticsearch
 Mailware is a dual-mode log monitoring tool that automatically:
+- Watches real-time Windows Event Logs 🪟
+- Monitors custom application logs (e.g., `app.log`) 📝
+- Sends critical alerts directly to your email inbox 📬
+- Stores logs in Elasticsearch for querying, visualization, or integration 🔍
 
-🪟 Monitors real-time Windows Event Logs
 
-📝 Tracks custom application logs (like app.log)
+## 🚀 Features
 
-📬 Sends critical alerts directly to your email inbox
+✅ Real-time log monitoring (System & Application logs)  
+✅ Dual log sources: System logs + Custom `app.log`  
+✅ Alert email with structured event info (Event ID, Source, Timestamp)  
+✅ Integration with Elasticsearch for storage and search  
+✅ Easy to extend with Kibana dashboards or log filtering 
 
-🔍 Stores logs in Elasticsearch for querying, visualization, and integration
 
-🚀 Features
-✅ Real-time log monitoring (System & Application logs)
-✅ Dual log sources: Windows Event Logs + app.log
-✅ Structured alert emails (Event ID, Source, Timestamp)
-✅ Elasticsearch integration for log storage & querying
-✅ Optional integration with Kibana for dashboards
+## 🛠️ Tech Stack
 
-🛠️ Tech Stack
-Layer	Tech
-Log Ingestion	Python win32evtlog, file I/O
-Alerting	smtplib with Gmail SMTP
-Storage	Elasticsearch 8.x
-Optional UI	Kibana (for log dashboards)
+| Layer         | Tech                         |
+|---------------|------------------------------|
+| Log Ingestion | Python `win32evtlog`, file I/O |
+| Alerting      | `smtplib`, Gmail SMTP         |
+| Storage       | Elasticsearch 8.x             |
+| Optional      | Kibana  |
 
-⚙️ Setup Instructions
-1. Clone & Set Up Environment
-bash
-Copy
-Edit
+
+
+---
+
+## ⚙️ Setup Instructions
+
+#### 1. Clone and Set Up Environment
+
+```bash
 git clone https://github.com/your-username/mailware.git
 cd mailware
 python -m venv venv
