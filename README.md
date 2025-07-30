@@ -23,7 +23,7 @@ Mailware is a dual-mode log monitoring tool that automatically:
 | Log Ingestion | Python `win32evtlog`, file I/O |
 | Alerting      | `smtplib`, Gmail SMTP         |
 | Storage       | Elasticsearch 8.x             |
-| Optional UI   | Kibana (optional for dashboards) |
+| Optional      | Kibana  |
 
 
 
