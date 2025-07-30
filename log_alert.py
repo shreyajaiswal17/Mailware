@@ -6,10 +6,9 @@ import time
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+
 load_dotenv()
 
-# Retrieve configuration from environment variables
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
@@ -21,15 +20,15 @@ POLLING_INTERVAL_SECONDS = int(os.getenv("POLLING_INTERVAL_SECONDS", "60"))
 SMTP_SERVER = os.getenv("SMTP_SERVER", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 EMAIL_SUBJECT = os.getenv("EMAIL_SUBJECT", "Elastic Log Alert")
-EMAIL_BODY_TEMPLATE = os.getenv("EMAIL_BODY_TEMPLATE", "🚨 Error logs detected in the last {time_window} minutes:\n\n{messages}")
+EMAIL_BODY_TEMPLATE = os.getenv("EMAIL_BODY_TEMPLATE", "🚨 Error logs detected in the last {time_window} minutes:{messages}")
 
-# Validate required environment variables
 required_vars = ["SENDER_EMAIL", "RECEIVER_EMAIL", "EMAIL_PASSWORD"]
 missing_vars = [var for var in required_vars if not os.getenv(var)]
 if missing_vars:
     raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
 
 # Connect to Elasticsearch
+
 es = Elasticsearch(ES_HOST)
 
 # Set to track seen logs to avoid duplicate alerts

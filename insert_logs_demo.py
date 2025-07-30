@@ -2,11 +2,16 @@
 from elasticsearch import Elasticsearch
 from datetime import datetime
 
+# Connect to Elasticsearch
 es = Elasticsearch("http://localhost:9200")
+
+# Log content
 log = {
-    "timestamp": datetime.now().isoformat(),  # Current timestamp
+    "timestamp": datetime.now().isoformat(),
     "level": "ERROR",
-    "message": "🚨 Manual test:Checking the sys"
+    "message": "🚨 Manual Alert Trigger: Simulated system failure for testing email pipeline."
 }
-res = es.index(index="logs", document=log)
-print("✅ Log inserted:", res['result'])
+
+# Insert into 'logs' index
+es.index(index="logs", document=log)
+
