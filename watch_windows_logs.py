@@ -3,7 +3,6 @@
 import win32evtlog
 import time
 from elasticsearch import Elasticsearch
-
 # Elasticsearch connection
 es = Elasticsearch("http://localhost:9200")
 
@@ -50,6 +49,5 @@ def fetch_recent_logs():
                 }
                 send_log_to_elastic(log_entry)
 
-        time.sleep(10)  # Wait before next check
-
+        time.sleep(10)  
 fetch_recent_logs()

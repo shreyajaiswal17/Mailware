@@ -1,3 +1,4 @@
+# send alerts to mail
 from elasticsearch import Elasticsearch
 from datetime import datetime, timedelta
 import smtplib
