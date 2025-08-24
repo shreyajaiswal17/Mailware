@@ -1,4 +1,5 @@
-📊 Mailware: Automated Log Monitoring & Email Alerting with Elasticsearch
+# 📊 Mailware: Automated Log Monitoring & Email Alerting with Elasticsearch
+
 Mailware is a dual-mode log monitoring tool that automatically:
 
 - Watches real-time Windows Event Logs 🪟
@@ -12,12 +13,12 @@ Mailware is a dual-mode log monitoring tool that automatically:
 ✅ Dual log sources: System logs + Custom `app.log`  
 ✅ Alert email with structured event info (Event ID, Source, Timestamp)  
 ✅ Integration with Elasticsearch for storage and search  
-✅ Easy to extend with Kibana dashboards or log filtering
+✅ Easy to extend with Kibana dashboards or log filtering 
 
 ## 🛠️ Tech Stack
 
 | Layer         | Tech                           |
-| ------------- | ------------------------------ |
+|---------------|--------------------------------|
 | Log Ingestion | Python `win32evtlog`, file I/O |
 | Alerting      | `smtplib`, Gmail SMTP          |
 | Storage       | Elasticsearch 8.x              |
@@ -27,7 +28,7 @@ Mailware is a dual-mode log monitoring tool that automatically:
 
 ## ⚙️ Setup Instructions
 
-#### 1. Clone and Set Up Environment
+### 1. Clone and Set Up Environment
 
 ```bash
 git clone https://github.com/your-username/mailware.git
@@ -35,78 +36,83 @@ cd mailware
 python -m venv venv
 venv\Scripts\activate  # For Windows
 pip install -r requirements.txt
-2. Start Elasticsearch Locally
+```
+
+### 2. Start Elasticsearch Locally
+
 📦 Download Elasticsearch
 
 Then start it:
 
-bash
-Copy
-Edit
+```bash
 .\bin\elasticsearch.bat
-📍 Ensure it’s accessible at: http://localhost:9200
+```
 
-3. Start the Log Watchers
-Terminal 1 – Monitor Custom Log File
-bash
-Copy
-Edit
+📍 Ensure it's accessible at: http://localhost:9200
+
+### 3. Start the Log Watchers
+
+**Terminal 1 – Monitor Custom Log File**
+```bash
 python watch_log_file.py
-Terminal 2 – Monitor Windows Event Logs
-bash
-Copy
-Edit
+```
+
+**Terminal 2 – Monitor Windows Event Logs**
+```bash
 python watch_windows_logs.py
+```
+
 ⚠️ Run terminal/VS Code as Administrator to access system logs.
 
-4. Run the Email Alert Script
-bash
-Copy
-Edit
+### 4. Run the Email Alert Script
+
+```bash
 python log_alert.py
+```
+
 🔎 This will:
+- Query recent logs (e.g., from the last 15 minutes)
+- Identify critical events
+- Send alert emails if any are detected
 
-Query recent logs (e.g., from the last 15 minutes)
+---
 
-Identify critical events
+## 📬 Email Configuration (Gmail)
 
-Send alert emails if any are detected
-
-📬 Email Configuration (Gmail)
 To enable alerts:
 
-Generate a Gmail App Password (if 2FA is enabled)
+1. Generate a Gmail App Password (if 2FA is enabled)
+2. Configure credentials in `log_alert.py`:
 
-Configure credentials in log_alert.py:
-
-python
-Copy
-Edit
+```python
 sender = "your_email@gmail.com"
 receiver = "alert_receiver@gmail.com"
 password = "your_app_password"
-🔐 Do not hardcode sensitive credentials in production. Use .env or a secret manager instead.
+```
 
-📈 Optional: Kibana for Visualization
+🔐 Do not hardcode sensitive credentials in production. Use `.env` or a secret manager instead.
+
+---
+
+## 📈 Optional: Kibana for Visualization
+
 📦 Download Kibana
 
 Start it:
 
-bash
-Copy
-Edit
+```bash
 .\bin\kibana.bat
+```
+
 Open http://localhost:5601 to visualize Elasticsearch data.
 
-🧩 Extensibility
+---
+
+## 🧩 Extensibility
+
 Mailware can be extended to support:
 
-📂 Multiple log file paths
+- 📂 Multiple log file paths
+- 🔎 Custom event filters
+- 📉 Threshold-based alerting
 
-🔎 Custom event filters
-
-📉 Threshold-based alerting
-
-📊 Kibana dashboards or Grafana integration
-
-```
