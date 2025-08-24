@@ -1,10 +1,10 @@
 📊 Mailware: Automated Log Monitoring & Email Alerting with Elasticsearch
 Mailware is a dual-mode log monitoring tool that automatically:
+
 - Watches real-time Windows Event Logs 🪟
 - Monitors custom application logs (e.g., `app.log`) 📝
 - Sends critical alerts directly to your email inbox 📬
 - Stores logs in Elasticsearch for querying, visualization, or integration 🔍
-
 
 ## 🚀 Features
 
@@ -12,19 +12,16 @@ Mailware is a dual-mode log monitoring tool that automatically:
 ✅ Dual log sources: System logs + Custom `app.log`  
 ✅ Alert email with structured event info (Event ID, Source, Timestamp)  
 ✅ Integration with Elasticsearch for storage and search  
-✅ Easy to extend with Kibana dashboards or log filtering 
-
+✅ Easy to extend with Kibana dashboards or log filtering
 
 ## 🛠️ Tech Stack
 
-| Layer         | Tech                         |
-|---------------|------------------------------|
+| Layer         | Tech                           |
+| ------------- | ------------------------------ |
 | Log Ingestion | Python `win32evtlog`, file I/O |
-| Alerting      | `smtplib`, Gmail SMTP         |
-| Storage       | Elasticsearch 8.x             |
-| Optional      | Kibana  |
-
-
+| Alerting      | `smtplib`, Gmail SMTP          |
+| Storage       | Elasticsearch 8.x              |
+| Optional      | Kibana                         |
 
 ---
 
@@ -112,3 +109,4 @@ Mailware can be extended to support:
 
 📊 Kibana dashboards or Grafana integration
 
+```
