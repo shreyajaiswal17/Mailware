@@ -1,4 +1,4 @@
-# 📊 Mailware: Automated Log Monitoring & Email Alerting with Elasticsearch
+# Mailware: Automated Log Monitoring & Email Alerting with Elasticsearch
 
 Mailware is a log monitoring and alerting system that:
 
@@ -8,16 +8,15 @@ Mailware is a log monitoring and alerting system that:
 - 💾 **Stores logs persistently** in Elasticsearch for analysis and querying
 - ⚡ **Prevents duplicate alerts** using intelligent log tracking
 
-## 🚀 Features
+##  Features
 
-✅ **Windows Event Log Integration** - Reads System/Application logs via `pywin32`  
-✅ **Real-time Log Monitoring** - Polls Elasticsearch every 10 seconds for new errors  
-✅ **Smart Email Alerting** - Gmail SMTP integration with duplicate prevention  
-✅ **Configurable Alert Levels** - Monitor ERROR, CRITICAL, or custom log levels  
-✅ **Persistent State Management** - Tracks processed logs to avoid re-processing  
-✅ **Environment-based Configuration** - All settings via `.env` file 
+**Windows Event Log Integration** - Reads System/Application logs via `pywin32`  
+**Real-time Log Monitoring** - Polls Elasticsearch every 10 seconds for new errors  
+**Smart Email Alerting** - Gmail SMTP integration with duplicate prevention  
+**Configurable Alert Levels** - Monitor ERROR, CRITICAL, or custom log levels   **Persistent State Management** - Tracks processed logs to avoid re-processing  
+ **Environment-based Configuration** - All settings via `.env` file 
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer         | Tech                           |
 |---------------|--------------------------------|
@@ -28,7 +27,7 @@ Mailware is a log monitoring and alerting system that:
 
 ---
 
-## ⚙️ Setup Instructions
+##  Setup Instructions
 
 ### 1. Clone and Set Up Environment
 
@@ -59,7 +58,7 @@ SMTP_PORT=587
 
 ### 3. Start Elasticsearch Locally
 
-📦 Download and extract Elasticsearch, then start it:
+ Download and extract Elasticsearch, then start it:
 
 ```powershell
 .\bin\elasticsearch.bat
@@ -97,7 +96,7 @@ python log_alert.py
 
 ---
 
-## 📬 Email Configuration (Gmail)
+##  Email Configuration (Gmail)
 
 To enable alerts:
 
@@ -114,7 +113,7 @@ EMAIL_PASSWORD=your_app_password
 
 ---
 
-## 📈 Optional: Kibana for Visualization
+## Optional: Kibana for Visualization
 
 📦 Download Kibana
 
@@ -128,7 +127,7 @@ Open http://localhost:5601 to visualize Elasticsearch data.
 
 ---
 
-## 🧩 Extensibility
+##  Extensibility
 
 Mailware can be extended to support:
 
@@ -140,7 +139,7 @@ Mailware can be extended to support:
 
 ---
 
-## 📝 Project Structure
+## Project Structure
 
 ```
 Mailware/
@@ -153,8 +152,7 @@ Mailware/
 ├── requirements.txt       # Python dependencies
 └── README.md             # This file
 ```
-
-## 🚀 How It Works
+## How It Works
 
 1. **Log Ingestion**: `read_windows_logs.py` continuously reads Windows Event Logs and indexes them in Elasticsearch
 2. **Real-time Monitoring**: `log_alert.py` polls Elasticsearch every 10 seconds for new ERROR/CRITICAL logs
